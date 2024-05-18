@@ -1,0 +1,13 @@
+<div class="bg-blue-500 text-white w-64 space-y-6 py-7 px-2">
+    <div class="text-center">
+        <h2 class="text-3xl font-semibold">Dashboard</h2>
+    </div>
+    <nav>
+        <a href={% url "dashboard" %} class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">Home</a>
+        <a href={% url "post_property" %} class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">Post Property</a>
+        <a href={% url "properties" %} class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">My Properties</a>
+        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">Messages</a>
+        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">Settings</a>
+        <a href={% url "logout" %} class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">Logout</a>
+    </nav>
+</div>
