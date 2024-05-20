@@ -120,6 +120,8 @@ AUTH_USER_MODEL = "authentication.Profile"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+MEDIA_URL = '/media/'
+
 STATIC_URL = 'static/'
 
 # Default primary key field type

@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from rent.models import Property
+from rent.models import Property, Notification
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 
 def home(request):
     properties = Property.objects.all()
@@ -58,10 +60,13 @@ def home(request):
         }
         properties_with_owner.append(property_with_owner)
     
+    is_authenticated = request.user.is_authenticated
+
     return render(request, 'home.html', {
         'properties': properties_with_owner,
         'property_type': property_type,
         'search_query': search_query,
+        'is_authenticated': is_authenticated
     })
 
 
@@ -182,3 +187,28 @@ def properties(request):
         properties = paginator.page(paginator.num_pages)
 
     return render(request, 'my_properties.html', {'properties': properties})
+
+@login_required
+def inbox(request):
+    notifications = Notification.objects.filter(user=request.user)
+    return render(request, 'inbox.html', {'notifications': notifications})
+
+@login_required
+def property_detail(request, pk):
+    property = get_object_or_404(Property, id=pk)
+
+    # Create a notification for the property owner
+    if request.user.is_authenticated:
+        notification = Notification(
+            user=property.owner,
+            viewed_by=request.user,
+            message=f'{request.user.first_name} {request.user.last_name} viewed your property: {property.title}'
+        )
+        notification.save()
+        return JsonResponse({
+            "status": "success",
+        })
+
+    return JsonResponse({
+        "status": "user is not authenticated",
+    })

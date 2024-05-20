@@ -1,13 +1,56 @@
-<div class="bg-blue-500 text-white w-64 space-y-6 py-7 px-2">
-    <div class="text-center">
-        <h2 class="text-3xl font-semibold">Dashboard</h2>
+<div class="bg-gray-100">
+    <!-- Side Navigation -->
+    <div id="side-nav" class="bg-blue-500 text-white sidebar-collapsed space-y-6 py-7 px-2 fixed inset-y-0 left-0 transition-all duration-300">
+        <nav class="space-y-4">
+            <div id="toggle-nav" class="flex items-center py-2.5 px-2 md:px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white" >
+                <i class="fas fa-bars mr-0 md:mr-3"></i>
+                <span class="hidden">Dashboard</span>
+            </div>        
+            <a href="{% url 'home' %}" class="flex items-center py-2.5 px-2 md:px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">
+                <i class="fas fa-home mr-0 md:mr-3"></i><span class="hidden">Home</span>
+            </a>
+            <a href="{% url 'post_property' %}" class="flex items-center py-2.5 px-2 md:px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">
+                <i class="fas fa-plus mr-0 md:mr-3"></i><span class="hidden">Post Property</span>
+            </a>
+            <a href="{% url 'properties' %}" class="flex items-center py-2.5 px-2 md:px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">
+                <i class="fas fa-list mr-0 md:mr-3"></i><span class="hidden">My Properties</span>
+            </a>
+            <a href={% url "inbox" %} class="flex items-center py-2.5 px-2 md:px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">
+                <i class="fas fa-inbox mr-0 md:mr-3"></i><span class="hidden">Inbox</span>
+            </a>
+            <a href="#" class="flex items-center py-2.5 px-2 md:px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">
+                <i class="fas fa-cog mr-0 md:mr-3"></i><span class="hidden">Settings</span>
+            </a>
+            <a href="{% url 'logout' %}" class="flex items-center py-2.5 px-2 md:px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">
+                <i class="fas fa-sign-out-alt mr-0 md:mr-3"></i><span class="hidden">Logout</span>
+            </a>
+        </nav>
     </div>
-    <nav>
-        <a href={% url "dashboard" %} class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">Home</a>
-        <a href={% url "post_property" %} class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">Post Property</a>
-        <a href={% url "properties" %} class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">My Properties</a>
-        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">Messages</a>
-        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">Settings</a>
-        <a href={% url "logout" %} class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-600 hover:text-white">Logout</a>
-    </nav>
+
+    <script>
+        document.getElementById('toggle-nav').addEventListener('click', function () {
+            var sideNav = document.getElementById('side-nav');
+            var mainContent = document.getElementById('main-content');
+            var spans = document.querySelectorAll('#side-nav span');
+    
+            if (sideNav.classList.contains('sidebar-collapsed')) {
+                sideNav.classList.remove('sidebar-collapsed');
+                sideNav.classList.add('sidebar-expanded');
+                mainContent.classList.remove('ml-4');
+                mainContent.classList.add('ml-16');
+                spans.forEach(function(span) {
+                    span.classList.remove('hidden');
+                });
+            } else {
+                sideNav.classList.remove('sidebar-expanded');
+                sideNav.classList.add('sidebar-collapsed');
+                mainContent.classList.remove('ml-16');
+                mainContent.classList.add('ml-4');
+                spans.forEach(function(span) {
+                    span.classList.add('hidden');
+                });
+            }
+        });
+    </script>
+    
 </div>

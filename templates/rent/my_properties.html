@@ -1,53 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Properties</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body class="bg-gray-100">
-
-<div class="flex min-h-screen">
-    <!-- Sidebar -->
-    {% include "side_nav.html" %}
-
-    <!-- Main content -->
-    <div class="flex-1 p-10">
-        <div class="text-center">
-            <h1 class="text-4xl font-semibold">My Properties</h1>
-            <p class="text-gray-600 mt-4">Manage all your posted properties here.</p>
-        </div>
-
-        <!-- Properties Grid -->
-        <div class="mt-10 grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for property in properties %}
-                <!-- Example Property Card -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img src= {% if property.images %}"{{ property.images.url }}"{% endif %}"" alt="Property Image" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">{{ property.title }}</h3>
-                        <p class="text-gray-600 mb-2"><i class="fas fa-map-marker-alt mr-2"></i>{{ property.location }}</p>
-                        <p class="text-gray-600 mb-4"><i class="fas fa-dollar-sign mr-2"></i>${{ property.price }}/month</p>
-                        <div class="flex justify-between items-center mt-4">
-                            <button onclick="openModal('{{ property.id }}', '{{ property.title }}', '{{ property.location }}', '{{ property.price }}', '{{ property.area }}', '{{ property.property_type }}', '{{ property.bedrooms }}', '{{ property.bathrooms }}', '{{ property.nearby_hospitals }}', '{{ property.nearby_colleges }}')" class="text-blue-500 hover:text-blue-700"><i class="fas fa-eye mr-1"></i>View Details</button>
-                            <a href={% url "delete_property" property.id %} class="text-red-500 hover:text-red-700"><i class="fas fa-trash mr-1"></i>Delete</a>
-                        </div>
-                    </div>
-                </div>
-        {% endfor %}
-        </div>
-        
-        <!-- Pagination -->
-        <div class="mt-6 flex justify-center">
-            <button onclick="navigatePage(-1)" class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">Previous</button>
-            <button onclick="navigatePage(1)" class="bg-blue-500 text-white px-4 py-2 rounded-md">Next</button>
-        </div>
+{% extends "dashboard_base.html" %}
+{% block content %}
+<!-- Main content -->
+<div id="main-content" class="flex-1 p-6 transition-all duration-300 ml-4">
+    <div class="text-center">
+        <h1 class="text-4xl font-semibold">My Properties</h1>
+        <p class="text-gray-600 mt-4">Manage all your posted properties here.</p>
     </div>
 
-</div>
+    <!-- Properties Grid -->
+    <div class="mt-10 grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for property in properties %}
+        <!-- Example Property Card -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src={% if property.images %}"{{ property.images.url }}"{% endif %}"https://via.placeholder.com/640x360.png?text=No+Image" alt="Property Image"
+                class="w-full h-48 object-cover">
+            <div class="p-6">
+                <h3 class="text-xl font-semibold mb-2">{{ property.title }}</h3>
+                <p class="text-gray-600 mb-2"><i class="fas fa-map-marker-alt mr-2"></i>{{ property.location }}</p>
+                <p class="text-gray-600 mb-4"><i class="fas fa-dollar-sign mr-2"></i>${{ property.price }}/month</p>
+                <div class="flex justify-between items-center mt-4">
+                    <button
+                        onclick="openModal('{{ property.id }}', '{{ property.images }}', '{{ property.title }}', '{{ property.location }}', '{{ property.price }}', '{{ property.area }}', '{{ property.property_type }}', '{{ property.bedrooms }}', '{{ property.bathrooms }}', '{{ property.nearby_hospitals }}', '{{ property.nearby_colleges }}')"
+                        class="text-blue-500 hover:text-blue-700"><i class="fas fa-eye mr-1"></i>View Details</button>
+                    <a href={% url "delete_property" property.id %} class="text-red-500 hover:text-red-700"><i
+                            class="fas fa-trash mr-1"></i>Delete</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 
+    <!-- Pagination -->
+    <div class="mt-6 flex justify-center">
+        <button onclick="navigatePage(-1)" class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">Previous</button>
+        <button onclick="navigatePage(1)" class="bg-blue-500 text-white px-4 py-2 rounded-md">Next</button>
+    </div>
+</div>
+{% endblock content %}
+
+{% block modal %}
 <!-- Modal -->
 <div id="propertyModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 hidden flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-3/4 lg:w-1/2">
@@ -65,13 +56,16 @@
         <p id="modalHospitals" class="text-gray-600 mb-2"><i class="fas fa-hospital mr-2"></i>Nearby Hospitals: </p>
         <p id="modalColleges" class="text-gray-600 mb-2"><i class="fas fa-school mr-2"></i>Nearby Colleges: </p>
         <div class="flex justify-between items-center mt-4">
-            <a href="" id="editButton" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit mr-1"></i>Edit</a>
+            <a href="" id="editButton" class="text-blue-500 hover:text-blue-700"><i
+                    class="fas fa-edit mr-1"></i>Edit</a>
             <a href="#" class="text-red-500 hover:text-red-700"><i class="fas fa-trash mr-1"></i>Delete</a>
         </div>
     </div>
 </div>
 
+{% endblock modal %}
 
+{% block script %}
 <!-- JavaScript -->
 <script>
     function navigatePage(offset) {
@@ -89,8 +83,16 @@
         window.location.href = window.location.pathname + '?' + urlParams.toString();
     }
 
-    function openModal(id, title, location, price, area, propertyType, bedrooms, bathrooms, hospitals, colleges) {
+    function openModal(id, image, title, location, price, area, propertyType, bedrooms, bathrooms, hospitals, colleges) {
         document.getElementById('editButton').href = '/edit-post/' + id + '/';
+        
+        if (image) {
+            console.log(image);
+            document.getElementById('modalImage').src = `/${image}`;
+        } else {
+            document.getElementById('modalImage').src = 'https://via.placeholder.com/640x360.png?text=No+Image';
+        }
+
         document.getElementById('modalTitle').textContent = title;
         document.getElementById('modalLocation').innerHTML = '<i class="fas fa-map-marker-alt mr-2"></i>Location: ' + location;
         document.getElementById('modalPrice').innerHTML = '<i class="fas fa-dollar-sign mr-2"></i>Price: $' + price + '/month';
@@ -107,6 +109,4 @@
         document.getElementById('propertyModal').classList.add('hidden');
     }
 </script>
-
-</body>
-</html>
+{% endblock script %}

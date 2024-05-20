@@ -1,46 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seller Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100">
+{% extends "dashboard_base.html" %}
+<!-- Main content -->
+{% block content %}
+<div id="main-content" class="flex-1 p-6 transition-all duration-300 ml-4">
+    <div class="text-center">
+        <h1 class="text-4xl font-semibold">Welcome to Seller Dashboard</h1>
+        <p class="text-gray-600 mt-4">Manage your properties and connect with potential tenants.</p>
+    </div>
 
-<div class="flex min-h-screen">
-    <!-- Sidebar -->
-    {% include "side_nav.html" %}
-
-    <!-- Main content -->
-    <div class="flex-1 p-10">
-        <div class="text-center">
-            <h1 class="text-4xl font-semibold">Welcome to Your Dashboard</h1>
-            <p class="text-gray-600 mt-4">Manage your properties and connect with potential tenants.</p>
-        </div>
-
-        <!-- Example Content -->
-        <div class="mt-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h2 class="text-xl font-semibold mb-2">Post New Property</h2>
-                    <p class="text-gray-600">Add a new property listing to attract potential tenants.</p>
-                    <a href={% url "post_property" %} class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Post Property</a>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h2 class="text-xl font-semibold mb-2">My Properties</h2>
-                    <p class="text-gray-600">View and manage all your property listings.</p>
-                    <a href={% url "properties" %} class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">View Properties</a>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h2 class="text-xl font-semibold mb-2">Messages</h2>
-                    <p class="text-gray-600">Check and respond to messages from interested tenants.</p>
-                    <a href="#" class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">View Messages</a>
-                </div>
+    <!-- Example Content -->
+    <div class="mt-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold mb-2">Post New Property</h2>
+                <p class="text-gray-600">Add a new property listing to attract potential tenants.</p>
+                <a href={% url "post_property" %}
+                    class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Post
+                    Property</a>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold mb-2">My Properties</h2>
+                <p class="text-gray-600">View and manage all your property listings.</p>
+                <a href={% url "properties" %}
+                    class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">View
+                    Properties</a>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold mb-2">Messages</h2>
+                <p class="text-gray-600">Check and respond to messages from interested tenants.</p>
+                <a href="#" class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">View
+                    Messages</a>
             </div>
         </div>
     </div>
 </div>
-
-</body>
-</html>
+{% endblock content %}

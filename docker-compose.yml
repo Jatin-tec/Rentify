@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  django_gunicorn:
+    restart: always
+    volumes:
+      - static:/static
+      - media:/media
+      - type: bind
+        source: ./
+        target: /app
+    container_name: django_gunicorn
+    env_file:
+      - ./.env
+    build:
+      context: ./
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+    container_name: nginx
+    volumes:
+      - static:/static
+    ports:
+      - 80:80
+    depends_on:
+      - django_gunicorn
+
+  db:
+    image: postgres
+    restart: always
+    container_name: postgres
+    env_file:
+      - ./.env.db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+volumes:
+  static:
+  postgres_data:
+  media:

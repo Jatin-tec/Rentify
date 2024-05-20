@@ -25,3 +25,15 @@ class Property(models.Model):
 
     def __str__(self):
         return self.title
+
+from django.utils import timezone
+
+class Notification(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    viewed_by = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='viewed_by', blank=True, null=True)
+    message = models.TextField()
+    timestamp = models.DateTimeField(default=timezone.now)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'Notification for {self.user.first_name} - {self.message}'
