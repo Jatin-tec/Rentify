@@ -154,15 +154,34 @@ def edit_property(request, id):
 
 @login_required
 def delete_property(request, id):
-    property = Property.objects.get(id=id)
+    property = get_object_or_404(Property, id=id)
+
+    properties_list = Property.objects.filter(owner=request.user)
+    page = request.GET.get('page', 1)
+
+    # Paginate the properties
+    paginator = Paginator(properties_list, 3)  # Show 10 properties per page
+    
+    try:
+        properties = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        properties = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        properties = paginator.page(paginator.num_pages)
 
     if property.owner != request.user:
         messages.error(request, 'You are not the owner of this property!')
-        return render(request, 'my_properties.html')
+        return render(request, 'my_properties.html', {'properties': properties})
     
+    if not property:
+        messages.error(request, 'Property does not exist!')
+        return render(request, 'my_properties.html')
+
     property.delete()
     messages.success(request, 'Property deleted successfully!')
-    return render(request, 'my_properties.html')
+    return render(request, 'my_properties.html', {'properties': properties})
 
 @login_required
 def dashboard(request):
