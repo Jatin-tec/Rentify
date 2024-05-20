@@ -11,21 +11,27 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = os.environ.get("DEBUG", "True")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!t90%_!!qy%^(rhyz-u2cy47z(go(olkt#@az3nh$jg)f3bd14'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 LOGIN_URL = "login"
 LOGOUT_REDIRECT_URL = "login"
@@ -116,6 +122,9 @@ USE_I18N = True
 USE_TZ = True
 
 AUTH_USER_MODEL = "authentication.Profile"
+
+CORS_ALLOWED_ORIGINS = os.environ.get("DJANGO_TRUSTED_HOSTS", "localhost").split(" ")
+CSRF_TRUSTED_ORIGINS = os.environ.get("DJANGO_TRUSTED_HOSTS", "localhost").split(" ")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
