@@ -190,7 +190,22 @@ def properties(request):
 
 @login_required
 def inbox(request):
-    notifications = Notification.objects.filter(user=request.user)
+    notifications_list = Notification.objects.filter(user=request.user)
+    page = request.GET.get('page', 1)
+
+    # Paginate the notifications
+    paginator = Paginator(notifications_list, 10)
+
+    try:
+        notifications = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        notifications = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        notifications = paginator.page(paginator.num_pages)
+
+
     return render(request, 'inbox.html', {'notifications': notifications})
 
 @login_required
