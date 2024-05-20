@@ -8,4 +8,4 @@ python manage.py migrate --no-input
 python manage.py collectstatic --no-input
 
 # Start Gunicorn server
-gunicorn source.wsgi:application --bind 0.0.0.0:8000
+gunicorn rentify.wsgi:application --bind 0.0.0.0:8000
