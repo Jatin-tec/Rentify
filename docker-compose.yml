@@ -6,9 +6,7 @@ services:
     volumes:
       - static:/static
       - media:/media
-      - type: bind
-        source: ./
-        target: /app
+      
     container_name: django_gunicorn
     env_file:
       - ./.env
