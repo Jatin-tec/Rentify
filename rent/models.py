@@ -21,7 +21,7 @@ class Property(models.Model):
     bathrooms = models.IntegerField()
     nearby_hospitals = models.CharField(max_length=255, blank=True, null=True)
     nearby_colleges = models.CharField(max_length=255, blank=True, null=True)
-    images = models.ImageField(upload_to='properties/')
+    images = models.ImageField(upload_to='media/properties/')
 
     def __str__(self):
         return self.title

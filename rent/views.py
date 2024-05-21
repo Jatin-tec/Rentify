@@ -15,7 +15,7 @@ def home(request):
 
     # Filter properties by property type
     if property_type and property_type != 'all':
-        properties = properties.filter(property_type=property_type)
+        properties = properties.filter(property_type=property_type).order_by('-id')
 
     # Filter properties by search query
     if search_query:
@@ -23,7 +23,7 @@ def home(request):
             Q(title__icontains=search_query) |
             Q(description__icontains=search_query) |
             Q(location__icontains=search_query)
-        )
+        ).order_by('-id')
 
     paginator = Paginator(properties, 3)  # Show 3 properties per page
     
@@ -124,6 +124,8 @@ def edit_property(request, id):
         nearby_colleges = request.POST.get('nearby_colleges', None)
         image = request.FILES.get('images', None)
         
+        print(image, 'image')
+
         if title:
             property.title = title
         if description:
@@ -156,7 +158,7 @@ def edit_property(request, id):
 def delete_property(request, id):
     property = get_object_or_404(Property, id=id)
 
-    properties_list = Property.objects.filter(owner=request.user)
+    properties_list = Property.objects.filter(owner=request.user).order_by('-id')
     page = request.GET.get('page', 1)
 
     # Paginate the properties
@@ -189,10 +191,9 @@ def dashboard(request):
 
 @login_required
 def properties(request):
-    properties_list = Property.objects.filter(owner=request.user)
+    properties_list = Property.objects.filter(owner=request.user).order_by('-id')
     page = request.GET.get('page', 1)
 
-    print(page)
     # Paginate the properties
     paginator = Paginator(properties_list, 3)  # Show 10 properties per page
     
@@ -209,7 +210,7 @@ def properties(request):
 
 @login_required
 def inbox(request):
-    notifications_list = Notification.objects.filter(user=request.user)
+    notifications_list = Notification.objects.filter(user=request.user).order_by('-timestamp')
     page = request.GET.get('page', 1)
 
     # Paginate the notifications
@@ -232,7 +233,7 @@ def property_detail(request, pk):
     property = get_object_or_404(Property, id=pk)
 
     # Create a notification for the property owner
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user != property.owner:
         notification = Notification(
             user=property.owner,
             viewed_by=request.user,
