@@ -17,6 +17,13 @@ services:
     depends_on:
       - db
 
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+
   nginx:
     restart: always
     build:
